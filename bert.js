@@ -61,9 +61,9 @@ function BertBinary(Obj) {
 }
 
 function ArrayToJS(Arr) {
-  a = [];
-	for (i = 0; i < Arr.length; i++) {
-	  o = Arr[i]
+  var a = [];
+	for (var i = 0; i < Arr.length; i++) {
+	  var o = Arr[i]
 	  if (o.type) {
 	    a[i] = o.toJS();
 	  } else {
@@ -85,7 +85,7 @@ function BertTuple(Arr) {
 		this[i] = Arr[i];
 	};
 	this.toJS = function() {
-	  return ArrayToJS(Arr);
+	  return ArrayToJS(Arr[0]);
 	};
 	this.eq = function(Binary) {
 	  return Obj == Binary.value;
