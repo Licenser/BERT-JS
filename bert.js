@@ -35,6 +35,12 @@ function BertClass() {
 function BertAtom(Obj) {
 	this.type = "Atom";
 	this.value = Obj;
+	this.eq = function(Atom) {
+	  return Obj == Atom.value;
+	};
+	this.toJS = function() {
+	  return Obj;
+	};
 	this.toString = function () {
 		return Obj;
 	};
@@ -43,9 +49,32 @@ function BertAtom(Obj) {
 function BertBinary(Obj) {
 	this.type = "Binary";
 	this.value = Obj;
+	this.eq = function(Binary) {
+	  return Obj == Binary.value;
+	};
+	this.toJS = function() {
+	  return Obj;
+	};
 	this.toString = function () {
 		return "<<\"" + Obj + "\">>";
 	};
+}
+
+function ArrayToJS(Arr) {
+  a = [];
+	for (i = 0; i < Arr.length; i++) {
+	  o = Arr[i]
+	  if (o.type) {
+	    a[i] = o.toJS();
+	  } else {
+	    if(o.length) {
+	      a[i] = ArrayToJS(o);
+	    } else {
+	      a[i] = o;
+	    };
+    };
+  };
+  return a;
 }
 
 function BertTuple(Arr) {
@@ -54,7 +83,14 @@ function BertTuple(Arr) {
 	this.value = Arr;
 	for (var i = 0; i < Arr.length; i++) {
 		this[i] = Arr[i];
-	}
+	};
+	this.toJS = function() {
+	  return ArrayToJS(Arr);
+	};
+	this.eq = function(Binary) {
+	  return Obj == Binary.value;
+	};
+	
 	this.toString = function () {
 		var i, s = "";
 		for (i = 0; i < this.length; i++) {
